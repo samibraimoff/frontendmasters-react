@@ -1,26 +1,27 @@
-import React from "react";
-import { render } from "react-dom";
-import Pet from "./Pet";
+import SearchParams from "./SearchParams";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import WrappedDetails from "./Details";
+import { StrictMode, useState } from "react";
+import ThemeContext from "./ThemeContext";
 
 const App = () => {
-  return React.createElement("div", {}, [
-    React.createElement("h1", {}, "hello world"),
-    React.createElement(Pet, {
-      name: "Luna",
-      animal: "Dog",
-      breed: "Havanese",
-    }),
-    React.createElement(Pet, {
-      name: "Pepper",
-      animal: "Bird",
-      breed: "Cockatiel",
-    }),
-    React.createElement(Pet, {
-      name: "Doink",
-      animal: "Cat",
-      breed: "Mix",
-    }),
-  ]);
+  const theme = useState("darkblue");
+
+  return (
+    <StrictMode>
+      <ThemeContext.Provider value={theme}>
+        <Router>
+          <header>
+            <Link to="/">Adapt me!</Link>
+          </header>
+          <Routes>
+            <Route path="/details/:id" element={<WrappedDetails />} />
+            <Route exact path="/" element={<SearchParams />} />
+          </Routes>
+        </Router>
+      </ThemeContext.Provider>
+    </StrictMode>
+  );
 };
 
-render(React.createElement(App), document.getElementById("root"));
+export default App;
